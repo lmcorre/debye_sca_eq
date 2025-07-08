@@ -1,0 +1,13 @@
+# Those are the electron scattering factors parametrization parameters provided by Ivan Pedro Lobato Hoyos and Dirk van Dick.
+# Please, refer to their work in Acta. Cryst. (2014).A70, 636 - 649. 
+# Atomic Number, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5
+
+
+
+
+
+
+
+
+
+
