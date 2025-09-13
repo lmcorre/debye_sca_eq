@@ -27,6 +27,13 @@ coordinates  = crystal.crystal_build(input_dict, n_atoms)
 print(f"Coordinates output: {len(coordinates)}")
 print(f"Coordinates unique: {len(np.unique(coordinates, axis = 0))}")
 
+n = np.zeros(len(coordinates))
+for i, r1 in enumerate(coordinates):
+    for r2 in coordinates:
+        if(r1[0] == r2[0] and r1[1] == r2[1] and r1[2]== r2[2]):
+            n[i] += 1
+
+np.savetxt("test_n.txt", n)
 
 fig, axs = plt.subplots(3,1, figsize = (10,30))
 for i in range(len(coordinates)):
