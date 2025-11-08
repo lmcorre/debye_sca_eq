@@ -38,19 +38,27 @@ def count_atoms(input_dict):
 
 def crystal_build(input_dict, n_atoms):
     coordinates = np.zeros((n_atoms, 3), dtype = np.float32)
-    lattice_length = np.array((input_dict['length_a'], input_dict['length_b'], input_dict['length_c']), dtype = np.float32)
+    lattice_length = np.array([input_dict['length_a'], input_dict['length_b'], input_dict['length_c']], dtype = np.float32)
+    base_vectors = np.array(input_dict["base"], dtype = np.float32)
+    print(base_vectors)
+    n_base = int(base_vectors.shape[0])
+    print(f"Number of vectors in base: {n_base}")
     ctypes_float_array_coordinates = np.ctypeslib.ndpointer(dtype = np.float32,
                                                 shape = coordinates.shape,
                                                 flags = 'CONTIGUOUS')
     ctypes_float_array_lattice = np.ctypeslib.ndpointer(dtype = np.float32,
                                                 shape = lattice_length.shape,
                                                 flags = 'CONTIGUOUS')
-    
-    crystal.cubic.argtypes = [ctypes_float_array_coordinates,
+    ctypes_float_array_base = np.ctypeslib.ndpointer(dtype = np.float32,
+                                                     shape = base_vectors.shape,
+                                                     flags = 'CONTIGUOUS')
+    crystal.crystal_coordinates.argtypes = [ctypes_float_array_coordinates,
+                              ctypes_float_array_base, 
                               ctypes_float_array_lattice, 
-                              ctypes.c_int, ctypes.c_char_p]
+                              ctypes.c_int, ctypes.c_int, ctypes.c_char_p]
     if(input_dict['crystal'] == "cubic"):
-        crystal.cubic(coordinates, lattice_length, n_atoms, input_dict["shape"].encode('utf-8'))
+        #crystal.cubic(coordinates, lattice_length, n_atoms, input_dict["shape"].encode('utf-8'))
+        crystal.crystal_coordinates(coordinates, base_vectors, lattice_length, n_base, n_atoms, input_dict["shape"].encode('utf-8'))
     #print(coordinates)
     return coordinates
 
